@@ -12,12 +12,17 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IAquaticSpeciesRepository, AquaticSpeciesRepository>();
         services.AddSingleton<IWaterQualityReadingRepository, WaterQualityReadingRepository>();
         services.AddSingleton<IAquariumDataService, AquariumDataService>();
+        services.AddSingleton<IStartupDataService, StartupDataService>();
         services.AddSingleton<IValidator<Shared.Models.AquaticSpecies>, AquaticSpeciesValidator>();
         services.AddSingleton<IValidator<Shared.Models.WaterQualityReading>, WaterQualityReadingValidator>();
         services.AddSingleton<IAquaticSpeciesSearchService, AquaticSpeciesSearchService>();
         services.AddSingleton<IWaterQualityReadingSearchService, WaterQualityReadingSearchService>();
+        services.AddSingleton<IActivityLogger, FileActivityLogger>();
         services.AddSingleton<ICommandExecutor, CommandExecutor>();
         services.AddSingleton<IDialogService, DialogService>();
+        services.AddSingleton<IReadingSimulationService, ReadingSimulationService>();
+        services.AddSingleton<AquariumService>();
+        services.AddSingleton<ICoreWcfHostService, CoreWcfHostService>();
         services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<MainWindow>();
 

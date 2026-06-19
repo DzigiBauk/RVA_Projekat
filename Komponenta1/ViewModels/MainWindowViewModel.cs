@@ -2,7 +2,11 @@ using System.Collections.ObjectModel;
 using Komponenta1.Commands;
 using Komponenta1.Interfaces;
 using Komponenta1.Models;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
 using Shared.Models;
+using SkiaSharp;
 
 namespace Komponenta1.ViewModels;
 
@@ -17,6 +21,13 @@ public sealed class MainWindowViewModel : ObservableObject
     private readonly IWaterQualityReadingSearchService _readingSearchService;
     private readonly ICommandExecutor _commandExecutor;
     private readonly IDialogService _dialogService;
+    private readonly IReadingSimulationService _simulationService;
+    private readonly IActivityLogger _activityLogger;
+    private readonly ICoreWcfHostService _coreWcfHostService;
+    private readonly ObservableCollection<int> _optimalValues = [0];
+    private readonly ObservableCollection<int> _acceptableValues = [0];
+    private readonly ObservableCollection<int> _suboptimalValues = [0];
+    private readonly ObservableCollection<int> _criticalValues = [0];
 
     private AquaticSpecies? _selectedSpecies;
     private WaterQualityReadingRow? _selectedReading;
@@ -38,6 +49,12 @@ public sealed class MainWindowViewModel : ObservableObject
     private string _speciesValidationMessage = string.Empty;
     private string _readingValidationMessage = string.Empty;
     private string _statusMessage = "Ready";
+    private bool _isSimulationEnabled;
+    private int _optimalCount;
+    private int _acceptableCount;
+    private int _suboptimalCount;
+    private int _criticalCount;
+    private string _serviceStatus = "Stopped";
 
     public MainWindowViewModel(
         IAquaticSpeciesRepository speciesRepository,
@@ -48,7 +65,10 @@ public sealed class MainWindowViewModel : ObservableObject
         IAquaticSpeciesSearchService speciesSearchService,
         IWaterQualityReadingSearchService readingSearchService,
         ICommandExecutor commandExecutor,
-        IDialogService dialogService)
+        IDialogService dialogService,
+        IReadingSimulationService simulationService,
+        IActivityLogger activityLogger,
+        ICoreWcfHostService coreWcfHostService)
     {
         _speciesRepository = speciesRepository;
         _readingRepository = readingRepository;
@@ -59,6 +79,13 @@ public sealed class MainWindowViewModel : ObservableObject
         _readingSearchService = readingSearchService;
         _commandExecutor = commandExecutor;
         _dialogService = dialogService;
+        _simulationService = simulationService;
+        _activityLogger = activityLogger;
+        _coreWcfHostService = coreWcfHostService;
+        _simulationService.ReadingStateChanged += OnReadingStateChanged;
+        _coreWcfHostService.StatusChanged += OnServiceStatusChanged;
+        _serviceStatus = _coreWcfHostService.Status;
+        InitializeStateSeries();
 
         SaveSpeciesCommand = new RelayCommand(SaveSpecies, CanSaveSpecies);
         EditSpeciesCommand = new RelayCommand(EditSpecies, () => SelectedSpecies is not null);
@@ -87,6 +114,8 @@ public sealed class MainWindowViewModel : ObservableObject
     public ObservableCollection<AquaticSpecies> DisplayedSpecies { get; } = [];
 
     public ObservableCollection<WaterQualityReadingRow> DisplayedReadings { get; } = [];
+
+    public ObservableCollection<ISeries> StateSeries { get; } = [];
 
     public IReadOnlyList<string> WaterTypes { get; } =
         ["Freshwater", "Saltwater", "Brackish"];
@@ -288,6 +317,66 @@ public sealed class MainWindowViewModel : ObservableObject
         private set => SetProperty(ref _statusMessage, value);
     }
 
+    public bool IsSimulationEnabled
+    {
+        get => _isSimulationEnabled;
+        set
+        {
+            if (!SetProperty(ref _isSimulationEnabled, value))
+            {
+                return;
+            }
+
+            if (value)
+            {
+                _simulationService.Start();
+                StatusMessage = "Reading state simulation started.";
+                _activityLogger.Log("Reading state simulation started.");
+            }
+            else
+            {
+                _simulationService.Stop();
+                StatusMessage = "Reading state simulation stopped.";
+                _activityLogger.Log("Reading state simulation stopped.");
+            }
+
+            OnPropertyChanged(nameof(SimulationStatus));
+        }
+    }
+
+    public int OptimalCount
+    {
+        get => _optimalCount;
+        private set => SetProperty(ref _optimalCount, value);
+    }
+
+    public int AcceptableCount
+    {
+        get => _acceptableCount;
+        private set => SetProperty(ref _acceptableCount, value);
+    }
+
+    public int SuboptimalCount
+    {
+        get => _suboptimalCount;
+        private set => SetProperty(ref _suboptimalCount, value);
+    }
+
+    public int CriticalCount
+    {
+        get => _criticalCount;
+        private set => SetProperty(ref _criticalCount, value);
+    }
+
+    public string SimulationStatus =>
+        IsSimulationEnabled ? "Running" : "Stopped";
+
+    public string ServiceStatus
+    {
+        get => _serviceStatus;
+        private set => SetProperty(ref _serviceStatus, value);
+    }
+
     public string SpeciesFormTitle =>
         _editingSpeciesId.HasValue ? "Edit species" : "Add species";
 
@@ -304,6 +393,8 @@ public sealed class MainWindowViewModel : ObservableObject
         if (!result.IsValid)
         {
             SpeciesValidationMessage = FormatErrors(result);
+            _activityLogger.Log(
+                $"Species validation failed: {SpeciesValidationMessage}");
             return;
         }
 
@@ -389,6 +480,8 @@ public sealed class MainWindowViewModel : ObservableObject
         if (!result.IsValid)
         {
             ReadingValidationMessage = FormatErrors(result);
+            _activityLogger.Log(
+                $"Reading validation failed: {ReadingValidationMessage}");
             return;
         }
 
@@ -467,6 +560,8 @@ public sealed class MainWindowViewModel : ObservableObject
         catch (Exception exception)
         {
             StatusMessage = exception.Message;
+            _activityLogger.Log(
+                $"Operation failed: {exception.Message}");
             _dialogService.ShowMessage(exception.Message, "Operation failed");
         }
 
@@ -505,10 +600,13 @@ public sealed class MainWindowViewModel : ObservableObject
             RefreshAll();
             ResetReadingForm();
             StatusMessage = $"Loaded {filePath}";
+            _activityLogger.Log($"Loaded data from '{filePath}'.");
         }
         catch (Exception exception)
         {
             StatusMessage = exception.Message;
+            _activityLogger.Log(
+                $"Loading data from '{filePath}' failed: {exception.Message}");
             _dialogService.ShowMessage(exception.Message, "Load failed");
         }
 
@@ -527,10 +625,13 @@ public sealed class MainWindowViewModel : ObservableObject
         {
             await _dataService.SaveAsync(filePath);
             StatusMessage = $"Saved {filePath}";
+            _activityLogger.Log($"Saved data to '{filePath}'.");
         }
         catch (Exception exception)
         {
             StatusMessage = exception.Message;
+            _activityLogger.Log(
+                $"Saving data to '{filePath}' failed: {exception.Message}");
             _dialogService.ShowMessage(exception.Message, "Save failed");
         }
     }
@@ -540,6 +641,7 @@ public sealed class MainWindowViewModel : ObservableObject
         ReplaceCollection(Species, _speciesRepository.GetAll());
         RefreshSpeciesView();
         RefreshReadingsView();
+        RefreshDashboard();
 
         if (!_editingReadingId.HasValue &&
             ReadingSpeciesId == Guid.Empty &&
@@ -547,6 +649,80 @@ public sealed class MainWindowViewModel : ObservableObject
         {
             ReadingSpeciesId = Species[0].Id;
         }
+    }
+
+    private void RefreshDashboard()
+    {
+        IReadOnlyList<WaterQualityReading> readings =
+            _readingRepository.GetAll();
+
+        OptimalCount = readings.Count(
+            reading => reading.State == WaterQualityState.Optimal);
+        AcceptableCount = readings.Count(
+            reading => reading.State == WaterQualityState.Acceptable);
+        SuboptimalCount = readings.Count(
+            reading => reading.State == WaterQualityState.Suboptimal);
+        CriticalCount = readings.Count(
+            reading => reading.State == WaterQualityState.Critical);
+
+        _optimalValues[0] = OptimalCount;
+        _acceptableValues[0] = AcceptableCount;
+        _suboptimalValues[0] = SuboptimalCount;
+        _criticalValues[0] = CriticalCount;
+    }
+
+    private void OnReadingStateChanged(
+        object? sender,
+        ReadingStateChangedEventArgs eventArgs)
+    {
+        RefreshReadingsView();
+        RefreshDashboard();
+        StatusMessage =
+            $"Reading {eventArgs.ReadingId} changed from " +
+            $"{eventArgs.PreviousState} to {eventArgs.CurrentState}.";
+        _activityLogger.Log(StatusMessage);
+    }
+
+    private void OnServiceStatusChanged(object? sender, EventArgs eventArgs)
+    {
+        ServiceStatus = _coreWcfHostService.Status;
+    }
+
+    private void InitializeStateSeries()
+    {
+        StateSeries.Add(CreateSeries(
+            "Optimal",
+            _optimalValues,
+            new SKColor(34, 197, 94)));
+        StateSeries.Add(CreateSeries(
+            "Acceptable",
+            _acceptableValues,
+            new SKColor(59, 130, 246)));
+        StateSeries.Add(CreateSeries(
+            "Suboptimal",
+            _suboptimalValues,
+            new SKColor(249, 115, 22)));
+        StateSeries.Add(CreateSeries(
+            "Critical",
+            _criticalValues,
+            new SKColor(239, 68, 68)));
+    }
+
+    private static ISeries CreateSeries(
+        string name,
+        ObservableCollection<int> values,
+        SKColor color)
+    {
+        return new PieSeries<int>
+        {
+            Name = name,
+            Values = values,
+            Fill = new SolidColorPaint(color),
+            DataLabelsPaint = new SolidColorPaint(SKColors.White),
+            DataLabelsSize = 14,
+            DataLabelsFormatter = point =>
+                $"{point.Context.Series.Name}: {point.Coordinate.PrimaryValue:0}"
+        };
     }
 
     private void RefreshSpeciesView()
