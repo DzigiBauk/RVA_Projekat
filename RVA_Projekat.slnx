@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="Komponenta1/Komponenta1.csproj" />
   <Project Path="Komponenta2/Komponenta2.csproj" />
+  <Project Path="Shared/Shared.csproj" Id="712b7d3d-a3cf-4a1e-b603-cc52d930716d" />
 </Solution>
