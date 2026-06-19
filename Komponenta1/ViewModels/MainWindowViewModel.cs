@@ -1,5 +1,3 @@
-using Shared.ViewModels;
-
 namespace Komponenta1.ViewModels;
 
 public sealed class MainWindowViewModel : ObservableObject
