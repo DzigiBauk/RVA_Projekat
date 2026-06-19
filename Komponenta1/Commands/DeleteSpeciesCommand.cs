@@ -4,7 +4,7 @@ using Shared.Models;
 
 namespace Komponenta1.Commands;
 
-public sealed class DeleteSpeciesCommand : IUndoableCommand
+public sealed class DeleteSpeciesCommand : IApplicationCommand
 {
     private readonly IAquaticSpeciesRepository _speciesRepository;
     private readonly IWaterQualityReadingRepository _readingRepository;

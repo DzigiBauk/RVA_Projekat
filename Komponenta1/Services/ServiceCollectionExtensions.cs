@@ -16,7 +16,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IValidator<Shared.Models.WaterQualityReading>, WaterQualityReadingValidator>();
         services.AddSingleton<IAquaticSpeciesSearchService, AquaticSpeciesSearchService>();
         services.AddSingleton<IWaterQualityReadingSearchService, WaterQualityReadingSearchService>();
-        services.AddSingleton<ICommandHistory, CommandHistory>();
+        services.AddSingleton<ICommandExecutor, CommandExecutor>();
         services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<MainWindow>();
 

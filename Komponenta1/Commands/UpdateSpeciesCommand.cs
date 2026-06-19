@@ -4,7 +4,7 @@ using Shared.Models;
 
 namespace Komponenta1.Commands;
 
-public sealed class UpdateSpeciesCommand : IUndoableCommand
+public sealed class UpdateSpeciesCommand : IApplicationCommand
 {
     private readonly IAquaticSpeciesRepository _repository;
     private readonly AquaticSpecies _updatedSpecies;

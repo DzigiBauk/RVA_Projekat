@@ -2,25 +2,25 @@ using Komponenta1.Interfaces;
 
 namespace Komponenta1.Services;
 
-public sealed class CommandHistory : ICommandHistory
+public sealed class CommandExecutor : ICommandExecutor
 {
-    private readonly Stack<IUndoableCommand> _undoStack = [];
-    private readonly Stack<IUndoableCommand> _redoStack = [];
+    private readonly Stack<IApplicationCommand> _undoStack = [];
+    private readonly Stack<IApplicationCommand> _redoStack = [];
 
     public bool CanUndo => _undoStack.Count > 0;
 
     public bool CanRedo => _redoStack.Count > 0;
 
-    public event EventHandler? HistoryChanged;
+    public event EventHandler? StateChanged;
 
-    public void Execute(IUndoableCommand command)
+    public void Execute(IApplicationCommand command)
     {
         ArgumentNullException.ThrowIfNull(command);
 
         command.Execute();
         _undoStack.Push(command);
         _redoStack.Clear();
-        OnHistoryChanged();
+        OnStateChanged();
     }
 
     public void Undo()
@@ -30,12 +30,12 @@ public sealed class CommandHistory : ICommandHistory
             return;
         }
 
-        IUndoableCommand command = _undoStack.Peek();
+        IApplicationCommand command = _undoStack.Peek();
         command.Undo();
 
         _undoStack.Pop();
         _redoStack.Push(command);
-        OnHistoryChanged();
+        OnStateChanged();
     }
 
     public void Redo()
@@ -45,12 +45,12 @@ public sealed class CommandHistory : ICommandHistory
             return;
         }
 
-        IUndoableCommand command = _redoStack.Peek();
+        IApplicationCommand command = _redoStack.Peek();
         command.Execute();
 
         _redoStack.Pop();
         _undoStack.Push(command);
-        OnHistoryChanged();
+        OnStateChanged();
     }
 
     public void Clear()
@@ -62,11 +62,11 @@ public sealed class CommandHistory : ICommandHistory
 
         _undoStack.Clear();
         _redoStack.Clear();
-        OnHistoryChanged();
+        OnStateChanged();
     }
 
-    private void OnHistoryChanged()
+    private void OnStateChanged()
     {
-        HistoryChanged?.Invoke(this, EventArgs.Empty);
+        StateChanged?.Invoke(this, EventArgs.Empty);
     }
 }

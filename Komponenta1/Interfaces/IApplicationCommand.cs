@@ -1,6 +1,6 @@
 namespace Komponenta1.Interfaces;
 
-public interface IUndoableCommand
+public interface IApplicationCommand
 {
     string Description { get; }
 

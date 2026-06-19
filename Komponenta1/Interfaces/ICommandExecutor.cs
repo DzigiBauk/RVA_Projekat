@@ -1,14 +1,14 @@
 namespace Komponenta1.Interfaces;
 
-public interface ICommandHistory
+public interface ICommandExecutor
 {
     bool CanUndo { get; }
 
     bool CanRedo { get; }
 
-    event EventHandler? HistoryChanged;
+    event EventHandler? StateChanged;
 
-    void Execute(IUndoableCommand command);
+    void Execute(IApplicationCommand command);
 
     void Undo();
 
