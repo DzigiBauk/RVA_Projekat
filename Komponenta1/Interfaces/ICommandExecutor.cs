@@ -6,8 +6,6 @@ public interface ICommandExecutor
 
     bool CanRedo { get; }
 
-    event EventHandler? StateChanged;
-
     void Execute(IApplicationCommand command);
 
     void Undo();

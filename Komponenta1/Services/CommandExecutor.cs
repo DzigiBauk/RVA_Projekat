@@ -11,8 +11,6 @@ public sealed class CommandExecutor : ICommandExecutor
 
     public bool CanRedo => _redoStack.Count > 0;
 
-    public event EventHandler? StateChanged;
-
     public void Execute(IApplicationCommand command)
     {
         ArgumentNullException.ThrowIfNull(command);
@@ -20,7 +18,6 @@ public sealed class CommandExecutor : ICommandExecutor
         command.Execute();
         _undoStack.Push(command);
         _redoStack.Clear();
-        OnStateChanged();
     }
 
     public void Undo()
@@ -35,7 +32,6 @@ public sealed class CommandExecutor : ICommandExecutor
 
         _undoStack.Pop();
         _redoStack.Push(command);
-        OnStateChanged();
     }
 
     public void Redo()
@@ -50,7 +46,6 @@ public sealed class CommandExecutor : ICommandExecutor
 
         _redoStack.Pop();
         _undoStack.Push(command);
-        OnStateChanged();
     }
 
     public void Clear()
@@ -62,11 +57,5 @@ public sealed class CommandExecutor : ICommandExecutor
 
         _undoStack.Clear();
         _redoStack.Clear();
-        OnStateChanged();
-    }
-
-    private void OnStateChanged()
-    {
-        StateChanged?.Invoke(this, EventArgs.Empty);
     }
 }

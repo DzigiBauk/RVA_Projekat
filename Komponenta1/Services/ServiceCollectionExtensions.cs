@@ -17,6 +17,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IAquaticSpeciesSearchService, AquaticSpeciesSearchService>();
         services.AddSingleton<IWaterQualityReadingSearchService, WaterQualityReadingSearchService>();
         services.AddSingleton<ICommandExecutor, CommandExecutor>();
+        services.AddSingleton<IDialogService, DialogService>();
         services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<MainWindow>();
 

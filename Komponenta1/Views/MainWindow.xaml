@@ -5,12 +5,301 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="{Binding Title}"
-        Height="450"
-        Width="800">
-    <Grid>
-        <TextBlock HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   FontSize="24"
-                   Text="{Binding Title}" />
-    </Grid>
+        MinHeight="650"
+        MinWidth="1100"
+        Height="780"
+        Width="1380"
+        WindowStartupLocation="CenterScreen">
+    <Window.InputBindings>
+        <KeyBinding Key="Z"
+                    Modifiers="Control"
+                    Command="{Binding UndoCommand}" />
+        <KeyBinding Key="Y"
+                    Modifiers="Control"
+                    Command="{Binding RedoCommand}" />
+    </Window.InputBindings>
+
+    <DockPanel Margin="14">
+        <Border DockPanel.Dock="Top"
+                Padding="0,0,0,12">
+            <StackPanel Orientation="Horizontal">
+                <Button Width="90"
+                        Margin="0,0,8,0"
+                        Command="{Binding LoadCommand}"
+                        Content="Load..." />
+                <Button Width="90"
+                        Margin="0,0,24,0"
+                        Command="{Binding SaveCommand}"
+                        Content="Save..." />
+                <Button Width="90"
+                        Margin="0,0,8,0"
+                        Command="{Binding UndoCommand}"
+                        Content="Undo" />
+                <Button Width="90"
+                        Command="{Binding RedoCommand}"
+                        Content="Redo" />
+            </StackPanel>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom"
+                Margin="0,12,0,0"
+                Padding="10"
+                Background="#FFF1F5F9"
+                BorderBrush="#FFD7DEE7"
+                BorderThickness="1">
+            <TextBlock Text="{Binding StatusMessage}"
+                       TextTrimming="CharacterEllipsis" />
+        </Border>
+
+        <TabControl>
+            <TabItem Header="Species">
+                <Grid Margin="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="14" />
+                        <ColumnDefinition Width="*" MinWidth="330" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBox Grid.Row="0"
+                                 Margin="0,0,0,10"
+                                 Padding="8"
+                                 Text="{Binding SpeciesSearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 ToolTip="Search all species properties" />
+
+                        <DataGrid Grid.Row="1"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  IsReadOnly="True"
+                                  SelectionMode="Single"
+                                  SelectedItem="{Binding SelectedSpecies}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="*"
+                                                    Header="Name"
+                                                    Binding="{Binding Name}" />
+                                <DataGridTextColumn Width="*"
+                                                    Header="Scientific name"
+                                                    Binding="{Binding ScientificName}" />
+                                <DataGridTextColumn Width="*"
+                                                    Header="Habitat"
+                                                    Binding="{Binding Habitat}" />
+                                <DataGridTextColumn Width="110"
+                                                    Header="Water type"
+                                                    Binding="{Binding WaterType}" />
+                                <DataGridTextColumn Width="90"
+                                                    Header="Lifespan"
+                                                    Binding="{Binding AverageLifespan}" />
+                                <DataGridTextColumn Width="220"
+                                                    Header="ID"
+                                                    Binding="{Binding Id}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <StackPanel Grid.Row="2"
+                                    Margin="0,10,0,0"
+                                    Orientation="Horizontal">
+                            <Button Width="90"
+                                    Margin="0,0,8,0"
+                                    Command="{Binding EditSpeciesCommand}"
+                                    Content="Edit" />
+                            <Button Width="90"
+                                    Command="{Binding DeleteSpeciesCommand}"
+                                    Content="Delete" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Border Grid.Column="2"
+                            Padding="16"
+                            BorderBrush="#FFD7DEE7"
+                            BorderThickness="1">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <TextBlock Margin="0,0,0,14"
+                                           FontSize="20"
+                                           FontWeight="SemiBold"
+                                           Text="{Binding SpeciesFormTitle}" />
+
+                                <TextBlock Text="Name" />
+                                <TextBox Margin="0,4,0,10"
+                                         Padding="6"
+                                         Text="{Binding SpeciesName, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Text="Scientific name" />
+                                <TextBox Margin="0,4,0,10"
+                                         Padding="6"
+                                         Text="{Binding SpeciesScientificName, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Text="Habitat" />
+                                <TextBox Margin="0,4,0,10"
+                                         Padding="6"
+                                         Text="{Binding SpeciesHabitat, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Text="Water type" />
+                                <ComboBox Margin="0,4,0,10"
+                                          Padding="6"
+                                          ItemsSource="{Binding WaterTypes}"
+                                          SelectedItem="{Binding SpeciesWaterType}" />
+
+                                <TextBlock Text="Average lifespan (years)" />
+                                <TextBox Margin="0,4,0,10"
+                                         Padding="6"
+                                         Text="{Binding SpeciesAverageLifespan, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" />
+
+                                <TextBlock Margin="0,4,0,12"
+                                           Foreground="Firebrick"
+                                           Text="{Binding SpeciesValidationMessage}"
+                                           TextWrapping="Wrap" />
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Width="100"
+                                            Margin="0,0,8,0"
+                                            Command="{Binding SaveSpeciesCommand}"
+                                            Content="Apply" />
+                                    <Button Width="100"
+                                            Command="{Binding CancelSpeciesEditCommand}"
+                                            Content="Clear" />
+                                </StackPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Water-quality readings">
+                <Grid Margin="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="14" />
+                        <ColumnDefinition Width="*" MinWidth="350" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBox Grid.Row="0"
+                                 Margin="0,0,0,10"
+                                 Padding="8"
+                                 Text="{Binding ReadingSearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 ToolTip="Search readings, species names, values, dates, and states" />
+
+                        <DataGrid Grid.Row="1"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  IsReadOnly="True"
+                                  SelectionMode="Single"
+                                  SelectedItem="{Binding SelectedReading}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="*"
+                                                    Header="Species"
+                                                    Binding="{Binding SpeciesName}" />
+                                <DataGridTextColumn Width="145"
+                                                    Header="Measured"
+                                                    Binding="{Binding MeasurementTime}" />
+                                <DataGridTextColumn Width="70"
+                                                    Header="pH"
+                                                    Binding="{Binding PHLevel}" />
+                                <DataGridTextColumn Width="95"
+                                                    Header="Temp. °C"
+                                                    Binding="{Binding Temperature}" />
+                                <DataGridTextColumn Width="105"
+                                                    Header="Oxygen"
+                                                    Binding="{Binding OxygenLevel}" />
+                                <DataGridTextColumn Width="90"
+                                                    Header="State"
+                                                    Binding="{Binding State}" />
+                                <DataGridTextColumn Width="220"
+                                                    Header="ID"
+                                                    Binding="{Binding Id}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <StackPanel Grid.Row="2"
+                                    Margin="0,10,0,0"
+                                    Orientation="Horizontal">
+                            <Button Width="90"
+                                    Margin="0,0,8,0"
+                                    Command="{Binding EditReadingCommand}"
+                                    Content="Edit" />
+                            <Button Width="90"
+                                    Command="{Binding DeleteReadingCommand}"
+                                    Content="Delete" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Border Grid.Column="2"
+                            Padding="16"
+                            BorderBrush="#FFD7DEE7"
+                            BorderThickness="1">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <TextBlock Margin="0,0,0,14"
+                                           FontSize="20"
+                                           FontWeight="SemiBold"
+                                           Text="{Binding ReadingFormTitle}" />
+
+                                <TextBlock Text="Species" />
+                                <ComboBox Margin="0,4,0,10"
+                                          Padding="6"
+                                          DisplayMemberPath="Name"
+                                          ItemsSource="{Binding Species}"
+                                          SelectedValue="{Binding ReadingSpeciesId}"
+                                          SelectedValuePath="Id" />
+
+                                <TextBlock Text="Measurement time" />
+                                <TextBox Margin="0,4,0,10"
+                                         Padding="6"
+                                         Text="{Binding ReadingMeasurementTime, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" />
+
+                                <TextBlock Text="pH level" />
+                                <TextBox Margin="0,4,0,10"
+                                         Padding="6"
+                                         Text="{Binding ReadingPHLevel, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" />
+
+                                <TextBlock Text="Temperature (°C)" />
+                                <TextBox Margin="0,4,0,10"
+                                         Padding="6"
+                                         Text="{Binding ReadingTemperature, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" />
+
+                                <TextBlock Text="Oxygen level (mg/L)" />
+                                <TextBox Margin="0,4,0,10"
+                                         Padding="6"
+                                         Text="{Binding ReadingOxygenLevel, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" />
+
+                                <TextBlock Text="State" />
+                                <ComboBox Margin="0,4,0,10"
+                                          Padding="6"
+                                          ItemsSource="{Binding WaterQualityStates}"
+                                          SelectedItem="{Binding ReadingState}" />
+
+                                <TextBlock Margin="0,4,0,12"
+                                           Foreground="Firebrick"
+                                           Text="{Binding ReadingValidationMessage}"
+                                           TextWrapping="Wrap" />
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Width="100"
+                                            Margin="0,0,8,0"
+                                            Command="{Binding SaveReadingCommand}"
+                                            Content="Apply" />
+                                    <Button Width="100"
+                                            Command="{Binding CancelReadingEditCommand}"
+                                            Content="Clear" />
+                                </StackPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
 </Window>
