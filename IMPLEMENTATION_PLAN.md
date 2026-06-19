@@ -29,17 +29,10 @@ this scope.
 - Logging for CRUD, undo/redo, simulation, startup, explicit persistence, and
   failures.
 - Failure-safe logging that cannot terminate the application.
-
-## Phase 11 - CoreWCF Hosting
-
-- Implement the shared `IAquariumService` contract in Component 1.
-- Self-host the CoreWCF endpoint inside the WPF process.
-- Return copied species and reading lists.
-- Filter readings by species, year, and month.
-- Validate incoming requests.
-- Start the endpoint with Component 1 and stop it during shutdown.
-- Display endpoint availability in the interface.
-- Keep repositories, validation, persistence, and mutation services private.
+- Self-hosted CoreWCF endpoint implementing the shared `IAquariumService`.
+- Copied species results and species/year/month-filtered reading results.
+- Request validation, WCF activity logging, and visible endpoint status.
+- Graceful service startup and shutdown with the WPF application.
 
 ## Phase 12 - Testing and Documentation
 

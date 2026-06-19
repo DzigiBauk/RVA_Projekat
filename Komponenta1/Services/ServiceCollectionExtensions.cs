@@ -21,6 +21,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ICommandExecutor, CommandExecutor>();
         services.AddSingleton<IDialogService, DialogService>();
         services.AddSingleton<IReadingSimulationService, ReadingSimulationService>();
+        services.AddSingleton<AquariumService>();
+        services.AddSingleton<ICoreWcfHostService, CoreWcfHostService>();
         services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<MainWindow>();
 

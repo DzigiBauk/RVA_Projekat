@@ -47,6 +47,13 @@
                            VerticalAlignment="Center"
                            FontWeight="SemiBold"
                            Text="{Binding SimulationStatus}" />
+                <TextBlock Margin="24,0,0,0"
+                           VerticalAlignment="Center"
+                           FontWeight="SemiBold"
+                           Text="WCF:" />
+                <TextBlock Margin="6,0,0,0"
+                           VerticalAlignment="Center"
+                           Text="{Binding ServiceStatus}" />
             </StackPanel>
         </Border>
 

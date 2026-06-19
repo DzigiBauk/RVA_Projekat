@@ -23,6 +23,7 @@ public sealed class MainWindowViewModel : ObservableObject
     private readonly IDialogService _dialogService;
     private readonly IReadingSimulationService _simulationService;
     private readonly IActivityLogger _activityLogger;
+    private readonly ICoreWcfHostService _coreWcfHostService;
     private readonly ObservableCollection<int> _optimalValues = [0];
     private readonly ObservableCollection<int> _acceptableValues = [0];
     private readonly ObservableCollection<int> _suboptimalValues = [0];
@@ -53,6 +54,7 @@ public sealed class MainWindowViewModel : ObservableObject
     private int _acceptableCount;
     private int _suboptimalCount;
     private int _criticalCount;
+    private string _serviceStatus = "Stopped";
 
     public MainWindowViewModel(
         IAquaticSpeciesRepository speciesRepository,
@@ -65,7 +67,8 @@ public sealed class MainWindowViewModel : ObservableObject
         ICommandExecutor commandExecutor,
         IDialogService dialogService,
         IReadingSimulationService simulationService,
-        IActivityLogger activityLogger)
+        IActivityLogger activityLogger,
+        ICoreWcfHostService coreWcfHostService)
     {
         _speciesRepository = speciesRepository;
         _readingRepository = readingRepository;
@@ -78,7 +81,10 @@ public sealed class MainWindowViewModel : ObservableObject
         _dialogService = dialogService;
         _simulationService = simulationService;
         _activityLogger = activityLogger;
+        _coreWcfHostService = coreWcfHostService;
         _simulationService.ReadingStateChanged += OnReadingStateChanged;
+        _coreWcfHostService.StatusChanged += OnServiceStatusChanged;
+        _serviceStatus = _coreWcfHostService.Status;
         InitializeStateSeries();
 
         SaveSpeciesCommand = new RelayCommand(SaveSpecies, CanSaveSpecies);
@@ -364,6 +370,12 @@ public sealed class MainWindowViewModel : ObservableObject
 
     public string SimulationStatus =>
         IsSimulationEnabled ? "Running" : "Stopped";
+
+    public string ServiceStatus
+    {
+        get => _serviceStatus;
+        private set => SetProperty(ref _serviceStatus, value);
+    }
 
     public string SpeciesFormTitle =>
         _editingSpeciesId.HasValue ? "Edit species" : "Add species";
@@ -669,6 +681,11 @@ public sealed class MainWindowViewModel : ObservableObject
             $"Reading {eventArgs.ReadingId} changed from " +
             $"{eventArgs.PreviousState} to {eventArgs.CurrentState}.";
         _activityLogger.Log(StatusMessage);
+    }
+
+    private void OnServiceStatusChanged(object? sender, EventArgs eventArgs)
+    {
+        ServiceStatus = _coreWcfHostService.Status;
     }
 
     private void InitializeStateSeries()

@@ -35,11 +35,19 @@ public partial class App : Application
         _serviceProvider
             .GetRequiredService<IActivityLogger>()
             .Log("Application started.");
+        await _serviceProvider
+            .GetRequiredService<ICoreWcfHostService>()
+            .StartAsync();
         _serviceProvider.GetRequiredService<MainWindow>().Show();
     }
 
     protected override void OnExit(ExitEventArgs e)
     {
+        _serviceProvider?
+            .GetService<ICoreWcfHostService>()?
+            .StopAsync()
+            .GetAwaiter()
+            .GetResult();
         _serviceProvider?
             .GetService<IActivityLogger>()?
             .Log("Application stopped.");
