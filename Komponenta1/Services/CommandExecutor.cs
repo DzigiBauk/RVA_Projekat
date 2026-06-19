@@ -2,7 +2,8 @@ using Komponenta1.Interfaces;
 
 namespace Komponenta1.Services;
 
-public sealed class CommandExecutor : ICommandExecutor
+public sealed class CommandExecutor(IActivityLogger activityLogger)
+    : ICommandExecutor
 {
     private readonly Stack<IApplicationCommand> _undoStack = [];
     private readonly Stack<IApplicationCommand> _redoStack = [];
@@ -18,6 +19,7 @@ public sealed class CommandExecutor : ICommandExecutor
         command.Execute();
         _undoStack.Push(command);
         _redoStack.Clear();
+        activityLogger.Log(command.Description);
     }
 
     public void Undo()
@@ -32,6 +34,7 @@ public sealed class CommandExecutor : ICommandExecutor
 
         _undoStack.Pop();
         _redoStack.Push(command);
+        activityLogger.Log($"Undo: {command.Description}");
     }
 
     public void Redo()
@@ -46,6 +49,7 @@ public sealed class CommandExecutor : ICommandExecutor
 
         _redoStack.Pop();
         _undoStack.Push(command);
+        activityLogger.Log($"Redo: {command.Description}");
     }
 
     public void Clear()
