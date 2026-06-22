@@ -1,0 +1,176 @@
+<Window x:Class="Komponenta2.Views.StatisticsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Aquarium Statistics"
+        Height="600"
+        Width="900"
+        WindowStartupLocation="CenterScreen">
+
+    <!-- TOAST ANIMATIONS -->
+    <Window.Resources>
+        <Storyboard x:Key="ShowToast">
+            <DoubleAnimation Storyboard.TargetName="Toast"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0" To="1"
+                             Duration="0:0:0.2"/>
+        </Storyboard>
+
+        <Storyboard x:Key="HideToast">
+            <DoubleAnimation Storyboard.TargetName="Toast"
+                             Storyboard.TargetProperty="Opacity"
+                             From="1" To="0"
+                             Duration="0:0:0.3"/>
+        </Storyboard>
+    </Window.Resources>
+
+    <Grid Margin="15">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <TextBlock Grid.Row="0"
+                   Text="Aquarium Statistics"
+                   FontSize="28"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,20"/>
+
+        <!-- FILTERS -->
+        <Border Grid.Row="1"
+                BorderBrush="LightGray"
+                BorderThickness="1"
+                CornerRadius="5"
+                Padding="10"
+                Margin="0,0,0,15">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Species -->
+                <StackPanel Grid.Column="0" Margin="5">
+                    <TextBlock Text="Species"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,5"/>
+
+                    <ComboBox ItemsSource="{Binding Species}"
+                              SelectedItem="{Binding SelectedSpecies}"
+                              DisplayMemberPath="Name"/>
+                </StackPanel>
+
+                <!-- Month -->
+                <StackPanel Grid.Column="1" Margin="5">
+                    <TextBlock Text="Month"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,5"/>
+
+                    <ComboBox ItemsSource="{Binding Months}"
+                              SelectedItem="{Binding SelectedMonth, Mode=TwoWay}"/>
+                </StackPanel>
+
+                <!-- Method -->
+                <StackPanel Grid.Column="2" Margin="5">
+                    <TextBlock Text="Statistic Method"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,5"/>
+
+                    <ComboBox ItemsSource="{Binding Methods}"
+                              SelectedItem="{Binding SelectedMethod}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- DATA -->
+        <GroupBox Grid.Row="2"
+                  Header="Measurements"
+                  Margin="0,0,0,15">
+
+            <ListBox ItemsSource="{Binding DisplayItems}"
+                     Margin="5"/>
+        </GroupBox>
+
+        <!-- BOTTOM -->
+        <Border Grid.Row="3"
+                BorderBrush="LightGray"
+                BorderThickness="1"
+                CornerRadius="5"
+                Padding="10">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Buttons -->
+                <StackPanel Orientation="Horizontal">
+
+                    <Button Content="Load"
+                            Width="90"
+                            Margin="5"
+                            Command="{Binding LoadCommand}"/>
+
+                    <Button Content="Export CSV"
+                            Width="90"
+                            Margin="5"
+                            Command="{Binding ExportCommand}"/>
+                </StackPanel>
+
+                <!-- Calculate & Result -->
+                <StackPanel Grid.Column="3"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+
+                    <Button Content="Calculate"
+                            Width="100"
+                            Margin="5"
+                            Command="{Binding CalculateCommand}"/>
+
+                    <TextBlock Text="Statistic method result:"
+                               FontWeight="Bold"
+                               VerticalAlignment="Center"
+                               Margin="10,0,5,0"/>
+
+                    <TextBlock Text="{Binding Result}"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+            </Grid>
+        </Border>
+
+        <!-- TOAST -->
+        <Border x:Name="Toast"
+                Grid.RowSpan="4"
+                Background="#CC333333"
+                CornerRadius="8"
+                Padding="12"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Margin="0,0,0,40"
+                Opacity="0"
+                IsHitTestVisible="False">
+
+            <TextBlock Text="{Binding StatusMessage}"
+                       Foreground="White"
+                       FontWeight="SemiBold"/>
+        </Border>
+
+    </Grid>
+</Window>

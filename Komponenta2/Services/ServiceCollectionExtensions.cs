@@ -8,8 +8,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddComponentTwo(this IServiceCollection services)
     {
-        services.AddSingleton<MainWindowViewModel>();
-        services.AddSingleton<MainWindow>();
+        services.AddSingleton<StatisticsViewModel>();
+        services.AddSingleton<StatisticsView>();
 
         return services;
     }
