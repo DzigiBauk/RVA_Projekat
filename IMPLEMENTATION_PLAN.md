@@ -21,16 +21,18 @@ this scope.
 - Explicit Load and Save dialogs.
 - Required fallback startup data when the default file is missing or empty.
 - Display of all required species and reading attributes.
-- Disabled-by-default, five-second randomized state simulation.
-- Full-state-cycle tracking for every reading.
-- Observer notifications for state changes.
+- Disabled-by-default, five-second randomized reading simulation.
+- `WaterQualityReading` instances are historical measurements after creation;
+  simulation appends new readings instead of mutating dated measurements.
+- Full-state-cycle tracking for every species that generates readings.
+- Observer notifications for generated readings.
 - LiveCharts2 dashboard with real-time state counts.
 - Timestamped text-file activity logging.
 - Logging for CRUD, undo/redo, simulation, startup, explicit persistence, and
   failures.
 - Failure-safe logging that cannot terminate the application.
 - Self-hosted CoreWCF endpoint implementing the shared `IAquariumService`.
-- Copied species results and species/year/month-filtered reading results.
+- Copied species results and species/month-filtered reading results.
 - Request validation, WCF activity logging, and visible endpoint status.
 - Graceful service startup and shutdown with the WPF application.
 
@@ -39,7 +41,8 @@ this scope.
 - Test validation, search, CRUD, cascade deletion, undo, and redo.
 - Test explicit JSON load/save and confirm shutdown never saves data.
 - Test fallback startup data for missing and empty default files.
-- Test that simulation visits every state and never enters undo history.
+- Test that simulation appends readings, visits every state, and never enters
+  undo history.
 - Test LiveCharts2 counts after CRUD, loading, undo/redo, and simulation.
 - Test logging content and failure handling.
 - Test WCF filtering, copied results, invalid requests, and empty results.
@@ -59,3 +62,6 @@ this scope.
 - Shared models are used directly as WCF data contracts; separate DTO classes
   are not required.
 - Component 1 is the authoritative data source.
+- Component 2 requests water-quality readings by species and month; the
+  optional `Year` field is retained only for contract compatibility and is not
+  used for filtering.

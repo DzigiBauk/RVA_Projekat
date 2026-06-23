@@ -18,8 +18,7 @@ namespace Komponenta2.Services
             var request = new ReadingsRequest
             {
                 SpeciesId = speciesId,
-                Month = month,
-                Year = DateTime.Now.Year
+                Month = month
             };
 
             return await proxy.GetReadingsAsync(request);

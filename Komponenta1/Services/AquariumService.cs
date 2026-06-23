@@ -32,14 +32,13 @@ public sealed class AquariumService(
                 .GetAll()
                 .Where(reading =>
                     reading.SpeciesId == request.SpeciesId &&
-                    reading.MeasurementTime.Year == request.Year &&
                     reading.MeasurementTime.Month == request.Month)
                 .Select(ModelCloner.Clone)
                 .ToList();
 
             activityLogger.Log(
                 $"WCF request: returned {readings.Count} reading(s) for " +
-                $"species {request.SpeciesId}, {request.Year}-{request.Month:D2}.");
+                $"species {request.SpeciesId}, month {request.Month:D2}.");
 
             return Task.FromResult(readings);
         }
@@ -66,11 +65,6 @@ public sealed class AquariumService(
         if (request.Month is < 1 or > 12)
         {
             throw new FaultException("Month must be between 1 and 12.");
-        }
-
-        if (request.Year is < 1 or > 9999)
-        {
-            throw new FaultException("Year must be between 1 and 9999.");
         }
 
         if (speciesRepository.GetById(request.SpeciesId) is null)

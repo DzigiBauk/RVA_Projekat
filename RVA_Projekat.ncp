@@ -1,0 +1,1216 @@
+<Project>
+  <Name>RVA_Projekat</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>Komponenta_1</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>CommandExecutor</Name>
+        <Access>Public</Access>
+        <Location left="1208" top="268" />
+        <Size width="162" height="247" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private IActivityLogger activityLogger</Member>
+        <Member type="Field">private Stack&lt;IApplicationCommand&gt; _undoStack</Member>
+        <Member type="Field">private Stack&lt;IApplicationCommand&gt; _redoStack</Member>
+        <Member type="Constructor">public CommandExecutor(IActivityLogger activityLogger)</Member>
+        <Member type="Method">void Execute(IApplicationCommand command)</Member>
+        <Member type="Method">public void Undo()</Member>
+        <Member type="Method">public void Redo()</Member>
+        <Member type="Method">public void Clear()</Member>
+        <Member type="Method">public bool CanUndo()</Member>
+        <Member type="Method">public bool CanRedo()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>ICommandExecutor</Name>
+        <Access>Public</Access>
+        <Location left="1208" top="10" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void Execute(IApplicationCommand command)</Member>
+        <Member type="Method">void Undo()</Member>
+        <Member type="Method">void Redo()</Member>
+        <Member type="Method">void Clear()</Member>
+        <Member type="Method">bool CanUndo()</Member>
+        <Member type="Method">bool CanRedo()</Member>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IApplicationCommand</Name>
+        <Access>Public</Access>
+        <Location left="1208" top="554" />
+        <Size width="162" height="247" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void Execute()</Member>
+        <Member type="Method">void Undo()</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>DeleteReadingCommand</Name>
+        <Access>Public</Access>
+        <Location left="665" top="896" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private IWaterQualityReadingRepository repository</Member>
+        <Member type="Field">private Guid readingId</Member>
+        <Member type="Field">private List&lt;WaterQualityReading&gt; before</Member>
+        <Member type="Field">private List&lt;WaterQualityReading&gt; after</Member>
+        <Member type="Constructor">public DeleteReadingCommand(IWaterQualityReadingRepository repository, Guid readingId)</Member>
+        <Member type="Method">public void Execute()</Member>
+        <Member type="Method">public void Undo()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>UpdateReadingCommand</Name>
+        <Access>Public</Access>
+        <Location left="858" top="896" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private IWaterQualityReadingRepository repository</Member>
+        <Member type="Field">private Guid readingId</Member>
+        <Member type="Field">private List&lt;WaterQualityReading&gt; before</Member>
+        <Member type="Field">private List&lt;WaterQualityReading&gt; after</Member>
+        <Member type="Constructor">public UpdateReadingCommand(IWaterQualityReadingRepository repository, Guid readingId)</Member>
+        <Member type="Method">public void Execute()</Member>
+        <Member type="Method">public void Undo()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>AddReadingCommand</Name>
+        <Access>Public</Access>
+        <Location left="1059" top="896" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private IWaterQualityReadingRepository repository</Member>
+        <Member type="Field">private WaterQualityReading reading</Member>
+        <Member type="Field">private List&lt;WaterQualityReading&gt; before</Member>
+        <Member type="Field">private List&lt;WaterQualityReading&gt; after</Member>
+        <Member type="Constructor">public AddReadingCommand(IWaterQualityReadingRepository repository, Guid readingId)</Member>
+        <Member type="Method">public void Execute()</Member>
+        <Member type="Method">public void Undo()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>AddSpeciesCommand</Name>
+        <Access>Public</Access>
+        <Location left="1434" top="909" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private IAquaticSpeciesRepository repository</Member>
+        <Member type="Field">private Guid readingId</Member>
+        <Member type="Field">private List&lt;AquaticSpecies&gt; before</Member>
+        <Member type="Field">private List&lt;AquaticSpecies&gt; after</Member>
+        <Member type="Constructor">public AddSpeciesCommand(IAquaticSpeciesRepository repository, Guid species)</Member>
+        <Member type="Method">public void Execute()</Member>
+        <Member type="Method">public void Undo()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>UpdateSpeciesCommand</Name>
+        <Access>Public</Access>
+        <Location left="1630" top="909" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private IAquaticSpeciesRepository repository</Member>
+        <Member type="Field">private Guid readingId</Member>
+        <Member type="Field">private List&lt;AquaticSpecies&gt; before</Member>
+        <Member type="Field">private List&lt;AquaticSpecies&gt; after</Member>
+        <Member type="Constructor">public UpdateSpeciesCommand(IAquaticSpeciesRepository repository, Guid species)</Member>
+        <Member type="Method">public void Execute()</Member>
+        <Member type="Method">public void Undo()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>DeleteSpeciesCommand</Name>
+        <Access>Public</Access>
+        <Location left="1818" top="909" />
+        <Size width="162" height="247" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private IAquaticSpeciesRepository speciesRepository</Member>
+        <Member type="Field">IWaterQualityReadingRepository readingRepository</Member>
+        <Member type="Field">private Guid speciesId</Member>
+        <Member type="Field">private List&lt;AquaticSpecies&gt; speciesBefore</Member>
+        <Member type="Field">private List&lt;WaterQualityReading&gt; readingBefore</Member>
+        <Member type="Field">private List&lt;AquaticSpecies&gt; speciesAfter</Member>
+        <Member type="Field">private List&lt;WaterQualityReading&gt; readingAfter</Member>
+        <Member type="Constructor">public DeleteSpeciesCommand(IAquaticSpeciesRepository speciesRepository, IWaterQualityReadingRepository readingRepository, Guid species)</Member>
+        <Member type="Method">public void Execute()</Member>
+        <Member type="Method">public void Undo()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IAquaticSpeciesRepository</Name>
+        <Access>Public</Access>
+        <Location left="987" top="1381" />
+        <Size width="234" height="260" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">IReadOnlyList&lt;AquaticSpecies&gt; GetAll()</Member>
+        <Member type="Method">AquaticSpecies? GetById(Guid id)</Member>
+        <Member type="Method">void Add(AquaticSpecies species)</Member>
+        <Member type="Method">bool Update(AquaticSpecies species)</Member>
+        <Member type="Method">bool Remove(Guid id)</Member>
+        <Member type="Method">void ReplaceAll(IEnumerable&lt;AquaticSpecies&gt; species)</Member>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IWaterQualityReadingRepository</Name>
+        <Access>Public</Access>
+        <Location left="382" top="1381" />
+        <Size width="234" height="260" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">IReadOnlyList&lt;WaterQualityReading&gt; GetAll()</Member>
+        <Member type="Method">WaterQualityReading? GetById(Guid id)</Member>
+        <Member type="Method">void Add(WaterQualityReading reading)</Member>
+        <Member type="Method">bool Update(WaterQualityReading reading)</Member>
+        <Member type="Method">bool Remove(Guid id)</Member>
+        <Member type="Method">void ReplaceAll(IEnumerable&lt;WaterQualityReading&gt; readings)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>AquaticSpeciesRepository</Name>
+        <Access>Public</Access>
+        <Location left="694" top="1381" />
+        <Size width="234" height="260" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">List&lt;AquaticSpecies&gt; _species</Member>
+        <Member type="Field">Object _syncRoot</Member>
+        <Member type="Constructor">public AquaticSpeciesRepository()</Member>
+        <Member type="Method">public IReadOnlyList&lt;AquaticSpecies&gt; GetAll()</Member>
+        <Member type="Method">public AquaticSpecies? GetById(Guid id)</Member>
+        <Member type="Method">public void Add(AquaticSpecies species)</Member>
+        <Member type="Method">public bool Update(AquaticSpecies species)</Member>
+        <Member type="Method">public bool Remove(Guid id)</Member>
+        <Member type="Method">public void ReplaceAll(IEnumerable&lt;AquaticSpecies&gt; species)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>WaterQualityReadingRepository</Name>
+        <Access>Public</Access>
+        <Location left="94" top="1381" />
+        <Size width="234" height="260" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">List&lt;WaterQualityReading&gt; _readings</Member>
+        <Member type="Field">Object _syncRoot</Member>
+        <Member type="Constructor">public WaterQualityReadingRepository()</Member>
+        <Member type="Method">public IReadOnlyList&lt;WaterQualityReading&gt; GetAll()</Member>
+        <Member type="Method">public WaterQualityReading? GetById(Guid id)</Member>
+        <Member type="Method">public void Add(WaterQualityReading reading)</Member>
+        <Member type="Method">public bool Update(WaterQualityReading reading)</Member>
+        <Member type="Method">public bool Remove(Guid id)</Member>
+        <Member type="Method">public void ReplaceAll(IEnumerable&lt;WaterQualityReading&gt; readings)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IReadingSimulationService</Name>
+        <Access>Public</Access>
+        <Location left="1554" top="1883" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void Start()</Member>
+        <Member type="Method">void Stop()</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>ReadingSimulationService</Name>
+        <Access>Public</Access>
+        <Location left="1435" top="1478" />
+        <Size width="375" height="349" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private WaterQualityState[] AllStates</Member>
+        <Member type="Field">private IAquaticSpeciesRepository speciesRepository</Member>
+        <Member type="Field">private IWaterQualityReadingRepository readingRepository</Member>
+        <Member type="Field">private DispatcherTimer timer</Member>
+        <Member type="Field">private Dictionary&lt;Guid, HashSet&lt;WaterQualityState&gt;&gt; visitedStatesBySpecies</Member>
+        <Member type="Field">public bool isRunning</Member>
+        <Member type="Field">public EventHandler&lt;ReadingGeneratedEventArgs&gt; ReadingGenerated</Member>
+        <Member type="Constructor">public ReadingSimulationService(IAquaticSpeciesRepository speciesRepository, IWaterQualityReadingRepository readingRepository)</Member>
+        <Member type="Method">public void Start()</Member>
+        <Member type="Method">public void Stop()</Member>
+        <Member type="Method">public void SimulateOnce()</Member>
+        <Member type="Method">private WaterQualityReading GetLatestReadingOrDefault(GUid speciesId, IEnumerable&lt;WaterQualityReading&gt; readings)</Member>
+        <Member type="Method">private WaterQualityState GetNextState(Guid speciesId, WaterQualityState previousState)</Member>
+        <Member type="Method">private WaterQualityReading CreateGeneratedReading(WaterQualityReading baseline, WaterQualityState state)</Member>
+        <Member type="Method">private double Vary(double value, double maximumDelta, double minimum, double maximum)</Member>
+        <Member type="Method">private void OnTimerTick(object sender, EventArgs e)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IWaterQualityReadingSearchService</Name>
+        <Access>Public</Access>
+        <Location left="1868" top="1831" />
+        <Size width="291" height="314" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">IReadOnlyList&lt;WaterQualityReading&gt; Search(IEnumerable&lt;WaterQualityReading&gt; readings, IEnumerable&lt;AquaticSpecies&gt; species, string searchText)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>WaterQualityReadingSearchService</Name>
+        <Access>Public</Access>
+        <Location left="1868" top="1478" />
+        <Size width="284" height="302" />
+        <Collapsed>False</Collapsed>
+        <Member type="Constructor">public WaterQualityReadingSearchService()</Member>
+        <Member type="Method">public IReadOnlyList&lt;WaterQualityReading&gt; Search(IEnumerable&lt;WaterQualityReading&gt; readings, IEnumerable&lt;AquaticSpecies&gt; species, string searchText)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IAquariumDataService</Name>
+        <Access>Public</Access>
+        <Location left="586" top="2017" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">Task LoadAsyncFile(string filePath, CancellationToken token)</Member>
+        <Member type="Method">Task SaveAsync(string filePath, CancellationToken token)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>AquariumDataService</Name>
+        <Access>Public</Access>
+        <Location left="382" top="2028" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">JsonSerializerOptions SerializerOptions</Member>
+        <Member type="Field">IAquaticSpeciesRepository speciesRepository</Member>
+        <Member type="Field">IWaterQualityReadingRepository readingRepository</Member>
+        <Member type="Constructor">public AquariumDataService(IAquaticSpeciesRepository speciesRepository, IWaterQualityReadingRepository readingRepository)</Member>
+        <Member type="Method">Task LoadAsyncFile(string filePath, CancellationToken token)</Member>
+        <Member type="Method">Task SaveAsync(string filePath, CancellationToken token)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>AquariumData</Name>
+        <Access>Public</Access>
+        <Location left="933" top="2344" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public List&lt;AquaticSpecies&gt; Species</Member>
+        <Member type="Field">public List&lt;WaterQualityReading&gt; Readings</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>DialogService</Name>
+        <Access>Public</Access>
+        <Location left="1591" top="189" />
+        <Size width="162" height="198" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">string JsonFilter</Member>
+        <Member type="Constructor">public DialogService()</Member>
+        <Member type="Method">public string? SelectFileToOpen()</Member>
+        <Member type="Method">public string? SelectFileToSave()</Member>
+        <Member type="Method">public bool Confirm(string message, string title)</Member>
+        <Member type="Method">public void ShowMessage(string message, string title)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>AquaticSpeciesSearchService</Name>
+        <Access>Public</Access>
+        <Location left="2137" top="802" />
+        <Size width="224" height="198" />
+        <Collapsed>False</Collapsed>
+        <Member type="Constructor">public AquaticSpeciesSearchService()</Member>
+        <Member type="Method">public IReadOnlyList&lt;AquaticSpecies&gt; Search(IEnumerable&lt;AquaticSpecies&gt; species, string? searchText)</Member>
+        <Member type="Method">bool Contains(string? value, string term)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>FileActivityLogger</Name>
+        <Access>Public</Access>
+        <Location left="414" top="2607" />
+        <Size width="162" height="198" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">Object _syncRoot</Member>
+        <Member type="Field">string filePath</Member>
+        <Member type="Constructor">public FileActivityLogger()</Member>
+        <Member type="Constructor">public FileActivityLogger(string filePath)</Member>
+        <Member type="Method">public void Log(string message)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IActivityLogger</Name>
+        <Access>Public</Access>
+        <Location left="402" top="2326" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void Log(string message)</Member>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IDialogService</Name>
+        <Access>Public</Access>
+        <Location left="1591" top="552" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">string? SelectFileToOpen()</Member>
+        <Member type="Method">string? SelectFileToSave()</Member>
+        <Member type="Method">bool Confirm(string message, string title)</Member>
+        <Member type="Method">void ShowMessage(string message, string title)</Member>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IAquaticSpeciesSearchService</Name>
+        <Access>Public</Access>
+        <Location left="2121" top="1154" />
+        <Size width="230" height="219" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">IReadOnlyList&lt;AquaticSpecies&gt; Search(IEnumerable&lt;AquaticSpecies&gt; species, string? searchText)</Member>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IAquariumService</Name>
+        <Access>Public</Access>
+        <Location left="137" top="2326" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">Task&lt;List&lt;AquaticSpecies&gt;&gt; GetSpeciesAsync()</Member>
+        <Member type="Method">Task&lt;List&lt;WaterQualityReading&gt;&gt; GetReadingsAsync(ReadingsRequest request)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>AquariumService</Name>
+        <Access>Public</Access>
+        <Location left="137" top="2017" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">IAquaticSpeciesRepository speciesRepository</Member>
+        <Member type="Field">IWaterQualityReadingRepository readingRepository</Member>
+        <Member type="Field">IActivityLogger activityLogger</Member>
+        <Member type="Constructor">public AquariumService(IAquaticSpeciesRepository speciesRepository, IWaterQualityReading readingRepository, IActivityLogger activityLogger)</Member>
+        <Member type="Method">public Task&lt;List&lt;AquaticSpecies&gt;&gt; GetSpeciesAsync()</Member>
+        <Member type="Method">public Task&lt;List&lt;WaterQualityReading&gt;&gt; GetReadingsAsync(ReadingsRequest request)</Member>
+        <Member type="Method">private void ValidateRequest(ReadingsRequest request)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Enum">
+        <Name>WaterQualityState</Name>
+        <Access>Public</Access>
+        <Location left="1222" top="2625" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Value>Optimal</Value>
+        <Value>Acceptable</Value>
+        <Value>Suboptimal</Value>
+        <Value>Critical</Value>
+      </Entity>
+      <Entity type="Class">
+        <Name>WaterQualityReading</Name>
+        <Access>Public</Access>
+        <Location left="1222" top="2359" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public Guid Id</Member>
+        <Member type="Field">public Guid SpeciesId</Member>
+        <Member type="Field">public DateTime MeasurementTime</Member>
+        <Member type="Field">public double PHLevel</Member>
+        <Member type="Field">public double Temperature</Member>
+        <Member type="Field">public double OxygenLevel</Member>
+        <Member type="Field">public WaterQualityState State</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>AquaticSpecies</Name>
+        <Access>Public</Access>
+        <Location left="747" top="2359" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public Guid Id</Member>
+        <Member type="Field">public string Name</Member>
+        <Member type="Field">public string ScientificName</Member>
+        <Member type="Field">public string Habitat</Member>
+        <Member type="Field">public string WaterType</Member>
+        <Member type="Field">public int AverageLifespan</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ReadingRequest</Name>
+        <Access>Public</Access>
+        <Location left="137" top="2607" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public Guid SpeciesId</Member>
+        <Member type="Field">public int Year</Member>
+        <Member type="Field">public int Month</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Realization" first="0" second="1">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>1292</X>
+          <Y>251</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="11" second="9">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>953</X>
+          <Y>1520</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>953</X>
+          <Y>1520</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="12" second="10">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>357</X>
+          <Y>1520</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>357</X>
+          <Y>1520</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="18" second="17">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>569</X>
+          <Y>2133</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>561</X>
+          <Y>2122</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="14" second="13">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="0" second="2">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>1291</X>
+          <Y>529</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Realization" first="5" second="2">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="4" second="2">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="3" second="2">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="6" second="2">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="7" second="2">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="8" second="2">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="3" second="10">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="4" second="10">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="5" second="10">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="6" second="9">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="7" second="9">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="8" second="9">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1905</X>
+          <Y>1241</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="8" second="10">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1905</X>
+          <Y>1241</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="18" second="10">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="18" second="9">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="14" second="10">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1410</X>
+          <Y>1808</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>537</X>
+          <Y>1695</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="14" second="9">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1405</X>
+          <Y>1780</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1138</X>
+          <Y>1670</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Realization" first="20" second="24">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="21" second="25">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="22" second="23">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="27" second="26">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="27" second="12">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="27" second="10">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>390</X>
+          <Y>1666</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="27" second="23">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>266</X>
+          <Y>2258</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="29" second="28">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>1309</X>
+          <Y>2600</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="26" second="31">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="18" second="19">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>533</X>
+          <Y>2278</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="19" second="30">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="19" second="29">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="12" second="29">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>275</X>
+          <Y>1674</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="11" second="30">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>Komponenta_2</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>StatisticsViewModel</Name>
+        <Access>Public</Access>
+        <Location left="511" top="385" />
+        <Size width="359" height="451" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">IAquariumClient client</Member>
+        <Member type="Field">WaterQualityAdapter adapter</Member>
+        <Member type="Field">IStatisticsService statisticsService</Member>
+        <Member type="Field">IExportService exportService</Member>
+        <Member type="Field">Dictionary data</Member>
+        <Member type="Field">public RelayCommand LoadCommand</Member>
+        <Member type="Field">public RelayCommand CalculateCommand</Member>
+        <Member type="Field">public RelayCommand ExportCommand</Member>
+        <Member type="Field">public ObservableCollection Species</Member>
+        <Member type="Field">public ObservableCollection DisplayItems</Member>
+        <Member type="Field">public ObservableCollection Methods</Member>
+        <Member type="Field">public ObservableCollection Months</Member>
+        <Member type="Field">public AquaticSpecies SelectedSpecies</Member>
+        <Member type="Field">public int SelectedMonth</Member>
+        <Member type="Field">public string SelectedMethod</Member>
+        <Member type="Field">public double Result</Member>
+        <Member type="Field">public string StatusMessage</Member>
+        <Member type="Method">public Task InitializeAsync()</Member>
+        <Member type="Method">public Task LoadAsync()</Member>
+        <Member type="Method">public void Calculate()</Member>
+        <Member type="Method">public Task ExportAsync(string path)</Member>
+        <Member type="Method">private void FillDisplay()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>StatisticView</Name>
+        <Access>Public</Access>
+        <Location left="511" top="102" />
+        <Size width="359" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">StatisticsViewModel viewModel</Member>
+        <Member type="Method">private void StatisticsView_Loaded(object sender, EventArgs e)</Member>
+        <Member type="Constructor">public StatisticView(StatisticsViewModel viewModel)</Member>
+        <Member type="Method">private void OnShowToastRequested()</Member>
+        <Member type="Method">protected sealed override void OnClosed(EventArgs arg)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>RelayCommand</Name>
+        <Access>Public</Access>
+        <Location left="82" top="935" />
+        <Size width="382" height="416" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private Action execute</Member>
+        <Member type="Field">private Predicate canExecute</Member>
+        <Member type="Method">public bool CanExecute(object parameter)</Member>
+        <Member type="Method">public void Execute(object parameter)</Member>
+        <Member type="Method">public void NotifyCanExecute()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IStatisticsStrategy</Name>
+        <Access>Public</Access>
+        <Location left="940" top="927" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">double CalculateStatistics(List&lt;WaterQualityReading&gt; readings)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>AveragePhStrategy</Name>
+        <Access>Public</Access>
+        <Location left="753" top="1202" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">double CalculateStatistics(List&lt;WaterQualityReading&gt; readings)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>MinimalOxygenStrategy</Name>
+        <Access>Public</Access>
+        <Location left="940" top="1202" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">double CalculateStatistics(List&lt;WaterQualityReading&gt; readings)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>CriticalCountStrategy</Name>
+        <Access>Public</Access>
+        <Location left="1126" top="1202" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">double CalculateStatistics(List&lt;WaterQualityReading&gt; readings)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IStatisticsService</Name>
+        <Access>Public</Access>
+        <Location left="2363" top="927" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">double Calculate(string method, List&lt;WaterQualityReading&gt; readings)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>StatisticsService</Name>
+        <Access>Public</Access>
+        <Location left="2470" top="453" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private IStatisticsStrategyFactory factory</Member>
+        <Member type="Method">public double Calculate(string method, List&lt;WaterQualityReading&gt; readings)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IExportService</Name>
+        <Access>Public</Access>
+        <Location left="2557" top="927" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">Task ExportAsync(string path, List&lt;WaterQualityReading&gt; readings)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>ExportService</Name>
+        <Access>Public</Access>
+        <Location left="2664" top="453" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public Task ExportAsync(string path, List&lt;WaterQualityReading&gt; readings)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>StatisticsStrategyFactory</Name>
+        <Access>Public</Access>
+        <Location left="1359" top="1202" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public IStatisticsStrategy Get(string method)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IStatisticsStrategyFactory</Name>
+        <Access>Public</Access>
+        <Location left="1359" top="927" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">IStatisticsStrategy Get(string method)</Member>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IAquariumClient</Name>
+        <Access>Public</Access>
+        <Location left="2767" top="927" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">Task&lt;List&lt;WaterQualityReadings&gt;&gt; GetReadings(Guid speciesId, int month)</Member>
+        <Member type="Method">Task&lt;List&lt;AquaticSpecies&gt;&gt; GetSpecies()</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>AquariumClient</Name>
+        <Access>Public</Access>
+        <Location left="2877" top="453" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private IAquariumService proxy</Member>
+        <Member type="Method">public Task&lt;List&lt;WaterQualityReadings&gt;&gt; GetReadings(Guid speciesId, int month)</Member>
+        <Member type="Method">public Task&lt;List&lt;AquaticSpecies&gt;&gt; GetSpecies()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>WaterQualityAdapter</Name>
+        <Access>Public</Access>
+        <Location left="1880" top="902" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public Dictionary Adapt(List&lt;WaterQualityReading&gt; readings, AquaticSpecies species)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IAquariumService</Name>
+        <Access>Public</Access>
+        <Location left="1653" top="1567" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">Task&lt;List&lt;AquaticSpecies&gt;&gt; GetSpeciesAsync()</Member>
+        <Member type="Method">Task&lt;List&lt;WaterQualityReading&gt;&gt; GetReadingsAsync(ReadingsRequest request)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>ReadingRequest</Name>
+        <Access>Public</Access>
+        <Location left="1846" top="1567" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public Guid SpeciesId</Member>
+        <Member type="Field">public int Year</Member>
+        <Member type="Field">public int Month</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>AquaticSpecies</Name>
+        <Access>Public</Access>
+        <Location left="2023" top="1567" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public Guid Id</Member>
+        <Member type="Field">public string Name</Member>
+        <Member type="Field">public string ScientificName</Member>
+        <Member type="Field">public string Habitat</Member>
+        <Member type="Field">public string WaterType</Member>
+        <Member type="Field">public int AverageLifespan</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>WaterQualityReading</Name>
+        <Access>Public</Access>
+        <Location left="2209" top="1567" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public Guid Id</Member>
+        <Member type="Field">public Guid SpeciesId</Member>
+        <Member type="Field">public DateTime MeasurementTime</Member>
+        <Member type="Field">public double PHLevel</Member>
+        <Member type="Field">public double Temperature</Member>
+        <Member type="Field">public double OxygenLevel</Member>
+        <Member type="Field">public WaterQualityState State</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Enum">
+        <Name>WaterQualityState</Name>
+        <Access>Public</Access>
+        <Location left="2209" top="1833" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Value>Optimal</Value>
+        <Value>Acceptable</Value>
+        <Value>Suboptimal</Value>
+        <Value>Critical</Value>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Association" first="1" second="0">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="2">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Realization" first="4" second="3">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="5" second="3">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="6" second="3">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="8" second="7">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>2449</X>
+          <Y>893</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="10" second="9">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>2639</X>
+          <Y>902</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="11" second="12">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>1441</X>
+          <Y>1190</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="14" second="13">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>2852</X>
+          <Y>902</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Association" first="15" second="19">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="15" second="18">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="19" second="20">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>2296</X>
+          <Y>1808</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="7" second="19">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2414</X>
+          <Y>1170</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="9" second="19">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2638</X>
+          <Y>1168</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="13" second="19">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="13" second="18">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="12" second="3">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="8" second="12">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2441</X>
+          <Y>556</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="15">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>897</X>
+          <Y>575</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1963</X>
+          <Y>877</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="14" second="17">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>3066</X>
+          <Y>595</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="13">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>988</X>
+          <Y>763</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="7">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2222</X>
+          <Y>816</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>2387</X>
+          <Y>902</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="9">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>971</X>
+          <Y>718</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>2584</X>
+          <Y>894</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="14" second="16">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>3129</X>
+          <Y>632</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1735</X>
+          <Y>1478</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+</Project>

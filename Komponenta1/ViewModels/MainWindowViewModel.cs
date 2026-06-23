@@ -82,7 +82,7 @@ public sealed class MainWindowViewModel : ObservableObject
         _simulationService = simulationService;
         _activityLogger = activityLogger;
         _coreWcfHostService = coreWcfHostService;
-        _simulationService.ReadingStateChanged += OnReadingStateChanged;
+        _simulationService.ReadingGenerated += OnReadingGenerated;
         _coreWcfHostService.StatusChanged += OnServiceStatusChanged;
         _serviceStatus = _coreWcfHostService.Status;
         InitializeStateSeries();
@@ -330,14 +330,17 @@ public sealed class MainWindowViewModel : ObservableObject
             if (value)
             {
                 _simulationService.Start();
-                StatusMessage = "Reading state simulation started.";
-                _activityLogger.Log("Reading state simulation started.");
+                StatusMessage =
+                    "Reading simulation started. New readings will be generated.";
+                _activityLogger.Log(
+                    "Reading simulation started. New readings will be generated.");
             }
             else
             {
                 _simulationService.Stop();
-                StatusMessage = "Reading state simulation stopped.";
-                _activityLogger.Log("Reading state simulation stopped.");
+                StatusMessage =
+                    "Reading simulation stopped.";
+                _activityLogger.Log("Reading simulation stopped.");
             }
 
             OnPropertyChanged(nameof(SimulationStatus));
@@ -671,15 +674,18 @@ public sealed class MainWindowViewModel : ObservableObject
         _criticalValues[0] = CriticalCount;
     }
 
-    private void OnReadingStateChanged(
+    private void OnReadingGenerated(
         object? sender,
-        ReadingStateChangedEventArgs eventArgs)
+        ReadingGeneratedEventArgs eventArgs)
     {
         RefreshReadingsView();
         RefreshDashboard();
+        string speciesName = _speciesRepository
+            .GetById(eventArgs.SpeciesId)?
+            .Name ?? "Unknown species";
         StatusMessage =
-            $"Reading {eventArgs.ReadingId} changed from " +
-            $"{eventArgs.PreviousState} to {eventArgs.CurrentState}.";
+            $"Generated reading {eventArgs.ReadingId} for {speciesName} " +
+            $"at {eventArgs.MeasurementTime:g} with state {eventArgs.State}.";
         _activityLogger.Log(StatusMessage);
     }
 

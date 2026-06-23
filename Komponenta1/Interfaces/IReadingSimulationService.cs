@@ -6,7 +6,7 @@ public interface IReadingSimulationService
 {
     bool IsRunning { get; }
 
-    event EventHandler<ReadingStateChangedEventArgs>? ReadingStateChanged;
+    event EventHandler<ReadingGeneratedEventArgs>? ReadingGenerated;
 
     void Start();
 

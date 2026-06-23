@@ -66,7 +66,7 @@
 
                     <ComboBox ItemsSource="{Binding Species}"
                               SelectedItem="{Binding SelectedSpecies}"
-                              DisplayMemberPath="Name"/>
+                              DisplayMemberPath="Name" SelectionChanged="ComboBox_SelectionChanged" DropDownOpened="ComboBox_DropDownOpened"/>
                 </StackPanel>
 
                 <!-- Month -->

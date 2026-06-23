@@ -47,4 +47,14 @@ public partial class StatisticsView : Window
         viewModel.ShowToastRequested -= OnShowToastRequested;
         base.OnClosed(e);
     }
+
+    private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+
+    }
+
+    private void ComboBox_DropDownOpened(object sender, EventArgs e)
+    {
+        viewModel.InitializeAsync();
+    }
 }

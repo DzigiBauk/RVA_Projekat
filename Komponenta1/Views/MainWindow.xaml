@@ -42,7 +42,8 @@
                 <ToggleButton Width="150"
                               Margin="24,0,0,0"
                               IsChecked="{Binding IsSimulationEnabled}"
-                              Content="State simulation" />
+                              Content="Reading simulation"
+                              ToolTip="Adds new water-quality readings for current species." />
                 <TextBlock Margin="10,0,0,0"
                            VerticalAlignment="Center"
                            FontWeight="SemiBold"
@@ -207,7 +208,7 @@
                                  Margin="0,0,0,10"
                                  Padding="8"
                                  Text="{Binding ReadingSearchText, UpdateSourceTrigger=PropertyChanged}"
-                                 ToolTip="Search readings, species names, values, dates, and states" />
+                                 ToolTip="Search water-quality readings, species names, measurement values, dates, and states" />
 
                         <DataGrid Grid.Row="1"
                                   AutoGenerateColumns="False"
@@ -300,7 +301,8 @@
                                 <ComboBox Margin="0,4,0,10"
                                           Padding="6"
                                           ItemsSource="{Binding WaterQualityStates}"
-                                          SelectedItem="{Binding ReadingState}" />
+                                          SelectedItem="{Binding ReadingState}"
+                                          ToolTip="Simulation creates new readings; existing measurements are not edited." />
 
                                 <TextBlock Margin="0,4,0,12"
                                            Foreground="Firebrick"
